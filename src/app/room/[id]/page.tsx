@@ -576,7 +576,7 @@ const RoomPage = () => {
       authCallback: async (tokenParams, callback) => {
         try {
           const response = await fetch(
-            `./api?clientId=${encodeURIComponent(username)}`,
+            `/whispr/api?clientId=${encodeURIComponent(username)}`,
           );
           if (!response.ok) {
             throw new Error("Failed to get token");
