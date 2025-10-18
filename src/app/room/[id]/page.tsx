@@ -63,7 +63,7 @@ const Avatar = ({
 
   return (
     <div
-      className={`${sizeClasses[size]} ${getAvatarGradient(username)} rounded-full flex items-center justify-center font-bold text-[#111111] shadow-lg`}
+      className={`${sizeClasses[size]} ${getAvatarGradient(username)} rounded-full flex items-center justify-center font-bold text-whispr-bg-primary shadow-lg`}
     >
       {getInitials(username)}
     </div>
@@ -106,13 +106,13 @@ const UsernameModal = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-[#111111]/90 backdrop-blur-md flex items-center justify-center p-4 z-50">
-      <div className="bg-[#191919] backdrop-blur-2xl border border-[#2A2A2A] rounded-2xl p-12 max-w-md w-full shadow-2xl">
+    <div className="fixed inset-0 bg-whispr-bg-primary/90 backdrop-blur-md flex items-center justify-center p-4 z-50">
+      <div className="bg-whispr-bg-secondary backdrop-blur-2xl border border-whispr-border rounded-2xl p-12 max-w-md w-full shadow-2xl">
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-[#EAEAEA] mb-3 tracking-tight">
+          <h2 className="text-3xl font-bold text-whispr-text-primary mb-3 tracking-tight">
             Enter Username
           </h2>
-          <p className="text-sm text-[#888888] tracking-wide">
+          <p className="text-sm text-whispr-text-secondary tracking-wide">
             Choose your display name to join the conversation
           </p>
         </div>
@@ -127,20 +127,20 @@ const UsernameModal = ({
                 setError("");
               }}
               placeholder="Username"
-              className="w-full bg-[#111111] border border-[#2A2A2A] rounded-lg px-4 py-3.5 text-[#EAEAEA] placeholder:text-[#555555] outline-none focus:border-[#FFFFFF] focus:ring-2 focus:ring-[#FFFFFF]/20 transition-all text-lg"
+              className="w-full bg-whispr-bg-primary border border-whispr-border rounded-lg px-4 py-3.5 text-whispr-text-primary placeholder:text-whispr-text-muted outline-none focus:border-whispr-text-secondary focus:ring-2 focus:ring-whispr-text-muted/20 transition-all text-lg"
               autoFocus
             />
             {error && (
-              <p className="text-[#FF6B6B] text-sm mt-3 font-medium">{error}</p>
+              <p className="text-whispr-error text-sm mt-3 font-medium">{error}</p>
             )}
-            <p className="text-[#555555] text-xs mt-3 tracking-wide">
+            <p className="text-whispr-text-muted text-xs mt-3 tracking-wide">
               No spaces • 2-20 characters
             </p>
           </div>
 
           <button
             type="submit"
-            className="w-full bg-[#FFFFFF] text-[#111111] py-4 rounded-lg hover:bg-[#EAEAEA] transition-all duration-200 text-sm uppercase tracking-[0.1em] font-semibold shadow-lg"
+            className="w-full bg-whispr-accent text-whispr-bg-primary py-4 rounded-lg hover:bg-whispr-text-primary transition-all duration-200 text-sm uppercase tracking-[0.1em] font-semibold shadow-lg"
           >
             Continue
           </button>
@@ -153,12 +153,12 @@ const UsernameModal = ({
 const ConnectionStatus = () => {
   const { currentStatus } = useChatConnection();
   return (
-    <div className="px-6 py-5 h-full bg-[#191919] border-r border-[#2A2A2A] flex items-center">
+    <div className="px-6 py-5 h-full bg-whispr-bg-secondary border-r border-whispr-border flex items-center">
       <div className="flex items-center gap-2.5">
         <div
-          className={`w-2 h-2 rounded-full transition-all duration-300 ${currentStatus === "connected" ? "bg-[#FFFFFF] shadow-[0_0_10px_rgba(255,255,255,0.5)]" : "bg-[#888888] shadow-[0_0_10px_rgba(136,136,136,0.5)]"}`}
+          className={`w-2 h-2 rounded-full transition-all duration-300 ${currentStatus === "connected" ? "bg-whispr-accent shadow-[0_0_10px_rgba(255,255,255,0.5)]" : "bg-whispr-text-secondary shadow-[0_0_10px_rgba(136,136,136,0.5)]"}`}
         />
-        <span className="text-xs text-[#888888] font-semibold uppercase tracking-[0.1em]">
+        <span className="text-xs text-whispr-text-secondary font-semibold uppercase tracking-[0.1em]">
           {currentStatus}
         </span>
       </div>
@@ -176,18 +176,18 @@ const RoomStatus = ({ roomId }: { roomId: string }) => {
   });
 
   return (
-    <div className="px-6 py-5 h-full bg-[#191919] flex items-center justify-between gap-4">
+    <div className="px-6 py-5 h-full bg-whispr-bg-secondary flex items-center justify-between gap-4">
       <div className="flex items-center gap-3 flex-1 min-w-0">
-        <span className="text-xs text-[#555555] uppercase tracking-[0.1em] font-semibold">
+        <span className="text-xs text-whispr-text-muted uppercase tracking-[0.1em] font-semibold">
           Room
         </span>
-        <span className="text-sm text-[#EAEAEA] font-mono truncate bg-[#111111] px-3 py-1.5 rounded-md">
+        <span className="text-sm text-whispr-text-primary font-mono truncate bg-whispr-bg-primary px-3 py-1.5 rounded-md">
           {roomId}
         </span>
       </div>
       <button
         onClick={() => router.push("/")}
-        className="px-4 py-2 bg-[#2A2A2A] hover:bg-[#FFFFFF] hover:text-[#111111] hover:scale-105 text-xs text-[#EAEAEA] transition-all duration-200 uppercase tracking-[0.1em] font-semibold rounded-lg shadow-sm hover:shadow-md"
+        className="px-4 py-2 bg-whispr-border hover:bg-whispr-accent hover:text-whispr-bg-primary hover:scale-105 text-xs text-whispr-text-primary transition-all duration-200 uppercase tracking-[0.1em] font-semibold rounded-lg shadow-sm hover:shadow-md"
       >
         Exit
       </button>
@@ -199,14 +199,14 @@ const EmptyState = ({ roomId }: { roomId: string }) => {
   return (
     <div className="flex items-center justify-center h-full">
       <div className="text-center max-w-md px-6">
-        <h2 className="text-2xl font-bold text-[#EAEAEA] mb-3">
+        <h2 className="text-2xl font-bold text-whispr-text-primary mb-3">
           Welcome to room {roomId}!
         </h2>
-        <p className="text-sm text-[#888888] leading-relaxed mb-4">
+        <p className="text-sm text-whispr-text-secondary leading-relaxed mb-4">
           Be the first to say something. Start a conversation and invite others
           to join.
         </p>
-        <p className="text-xs text-[#555555] italic">
+        <p className="text-xs text-whispr-text-muted italic">
           Messages are automatically deleted after 24 hours
         </p>
       </div>
@@ -320,7 +320,7 @@ const ChatBox = ({
   };
 
   return (
-    <div className="flex flex-col w-full h-full bg-[#111111]">
+    <div className="flex flex-col w-full h-full bg-whispr-bg-primary">
       <div className="flex-1 px-6 pt-6 pb-3 overflow-y-auto">
         {messages.length === 0 ? (
           <EmptyState roomId={roomId} />
@@ -374,11 +374,11 @@ const ChatBox = ({
                       <div
                         className={`flex items-baseline gap-2 mb-1.5 ${isMine ? "justify-end" : "justify-start"}`}
                       >
-                        <span className="text-xs text-[#EAEAEA] font-semibold">
+                        <span className="text-xs text-[var(--whispr-text-primary)] font-semibold">
                           {msg.clientId}
                         </span>
                         {msg.timestamp && (
-                          <span className="text-[10px] text-[#555555]">
+                          <span className="text-[10px] text-[var(--whispr-text-muted)]">
                             {formatTime(new Date(msg.timestamp).getTime())}
                           </span>
                         )}
@@ -389,8 +389,8 @@ const ChatBox = ({
                       onClick={() => onUpdateMessage(msg)}
                       className={`px-4 py-2.5 ${
                         isMine
-                          ? "bg-[#FFFFFF] text-[#111111] cursor-pointer hover:bg-[#EAEAEA] hover:shadow-lg hover:scale-[1.02]"
-                          : "bg-[#191919] text-[#EAEAEA] hover:bg-[#222222]"
+                          ? "bg-[var(--whispr-accent)] text-[var(--whispr-bg-primary)] cursor-pointer hover:bg-[var(--whispr-text-primary)] hover:shadow-lg hover:scale-[1.02]"
+                          : "bg-[var(--whispr-bg-secondary)] text-[var(--whispr-text-primary)] hover:bg-[var(--whispr-bg-tertiary)]"
                       } transition-all duration-200 ${borderRadius} shadow-sm group-hover:shadow-md`}
                     >
                       <p className="text-sm leading-relaxed break-words">
@@ -416,19 +416,19 @@ const ChatBox = ({
               <div className="flex items-center gap-2">
                 <div className="flex gap-1">
                   <span
-                    className="w-1.5 h-1.5 bg-[#FFFFFF] rounded-full animate-bounce"
+                    className="w-1.5 h-1.5 bg-whispr-accent rounded-full animate-bounce"
                     style={{ animationDelay: "0ms" }}
                   />
                   <span
-                    className="w-1.5 h-1.5 bg-[#FFFFFF] rounded-full animate-bounce"
+                    className="w-1.5 h-1.5 bg-whispr-accent rounded-full animate-bounce"
                     style={{ animationDelay: "150ms" }}
                   />
                   <span
-                    className="w-1.5 h-1.5 bg-[#FFFFFF] rounded-full animate-bounce"
+                    className="w-1.5 h-1.5 bg-whispr-accent rounded-full animate-bounce"
                     style={{ animationDelay: "300ms" }}
                   />
                 </div>
-                <p className="text-xs text-[#888888] font-medium">
+                <p className="text-xs text-whispr-text-secondary font-medium">
                   {othersTyping.join(", ")}{" "}
                   {othersTyping.length === 1 ? "is" : "are"} typing...
                 </p>
@@ -438,13 +438,13 @@ const ChatBox = ({
         })()}
       </div>
 
-      <div className="border-t border-[#2A2A2A] bg-[#191919]">
+      <div className="border-t border-whispr-border bg-whispr-bg-secondary">
         <div className="px-6 py-4">
           <div className="flex items-center gap-3 mb-2">
             <input
               type="text"
               placeholder="Type a message..."
-              className="flex-1 bg-[#111111] border-2 border-[#2A2A2A] rounded-lg px-4 py-3 text-[#EAEAEA] placeholder:text-[#555555] outline-none focus:border-[#FFFFFF] focus:ring-4 focus:ring-[#FFFFFF]/10 focus:shadow-[0_0_20px_rgba(255,255,255,0.1)] transition-all duration-200 text-sm"
+              className="flex-1 bg-whispr-bg-primary border-2 border-whispr-border rounded-lg px-4 py-3 text-whispr-text-primary placeholder:text-whispr-text-muted outline-none focus:border-whispr-text-muted focus:ring-2 focus:ring-whispr-text-muted/20 transition-all duration-200 text-sm"
               value={inputValue}
               onChange={handleChange}
               onKeyDown={(event) => {
@@ -456,12 +456,12 @@ const ChatBox = ({
             <button
               onClick={handleSend}
               disabled={!inputValue.trim()}
-              className="bg-[#FFFFFF] text-[#111111] p-3 rounded-full hover:bg-[#EAEAEA] hover:scale-110 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg active:scale-90"
+              className="bg-whispr-accent text-whispr-bg-primary p-3 rounded-full hover:bg-whispr-text-primary hover:scale-110 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg active:scale-90"
             >
               <Send className="w-5 h-5" />
             </button>
           </div>
-          <p className="text-[10px] text-[#555555] italic text-center">
+          <p className="text-[10px] text-whispr-text-muted italic text-center">
             like a real whisper, these messages fade away in 24 hours
           </p>
         </div>
@@ -490,9 +490,9 @@ const PresenceStatus = ({ currentUsername }: { currentUsername: string }) => {
   }, [isRoomAttached, enter]);
 
   return (
-    <div className="flex flex-col bg-[#111111] w-full h-full px-6 py-6">
+    <div className="flex flex-col bg-whispr-bg-primary w-full h-full px-6 py-6">
       <div className="mb-4">
-        <h3 className="text-xs font-semibold uppercase tracking-wider text-[#555555]">
+        <h3 className="text-xs font-semibold uppercase tracking-wider text-whispr-text-muted">
           Online · {presenceData.length}
         </h3>
       </div>
@@ -502,18 +502,18 @@ const PresenceStatus = ({ currentUsername }: { currentUsername: string }) => {
           return (
             <div
               key={idx}
-              className="flex items-center gap-3 w-full group cursor-pointer transition-all duration-200 hover:bg-[#191919] px-2 py-1.5 rounded-lg -mx-2"
+              className="flex items-center gap-3 w-full group cursor-pointer transition-all duration-200 hover:bg-whispr-bg-secondary px-2 py-1.5 rounded-lg -mx-2"
             >
               <div className="relative">
                 <Avatar username={member.clientId} size="md" />
-                <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-[#FFFFFF] rounded-full border-2 border-[#111111] shadow-[0_0_6px_rgba(255,255,255,0.5)]" />
+                <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-whispr-accent rounded-full border-2 border-whispr-bg-primary shadow-[0_0_6px_rgba(255,255,255,0.5)]" />
               </div>
               <div className="flex items-baseline gap-2">
-                <span className="text-sm text-[#EAEAEA] group-hover:text-white transition-colors font-medium">
+                <span className="text-sm text-whispr-text-primary group-hover:text-white transition-colors font-medium">
                   {member.clientId}
                 </span>
                 {isCurrentUser && (
-                  <span className="text-xs text-[#555555]">(you)</span>
+                  <span className="text-xs text-whispr-text-muted">(you)</span>
                 )}
               </div>
             </div>
@@ -521,22 +521,22 @@ const PresenceStatus = ({ currentUsername }: { currentUsername: string }) => {
         })}
       </div>
 
-      <div className="mt-6 pt-4 border-t border-[#2A2A2A]">
-        <h3 className="text-xs font-semibold uppercase tracking-wider text-[#555555] mb-3">
+      <div className="mt-6 pt-4 border-t border-whispr-border">
+        <h3 className="text-xs font-semibold uppercase tracking-wider text-whispr-text-muted mb-3">
           Coming Soon
         </h3>
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2 px-2 py-1.5">
-            <div className="w-1.5 h-1.5 rounded-full bg-[#555555]" />
-            <span className="text-xs text-[#888888]">Password protected rooms</span>
+            <div className="w-1.5 h-1.5 rounded-full bg-whispr-text-muted" />
+            <span className="text-xs text-whispr-text-secondary">Password protected rooms</span>
           </div>
           <div className="flex items-center gap-2 px-2 py-1.5">
-            <div className="w-1.5 h-1.5 rounded-full bg-[#555555]" />
-            <span className="text-xs text-[#888888]">Room roles (owner, admin)</span>
+            <div className="w-1.5 h-1.5 rounded-full bg-whispr-text-muted" />
+            <span className="text-xs text-whispr-text-secondary">Room roles (owner, admin)</span>
           </div>
           <div className="flex items-center gap-2 px-2 py-1.5">
-            <div className="w-1.5 h-1.5 rounded-full bg-[#555555]" />
-            <span className="text-xs text-[#888888]">System messages for joins/leaves</span>
+            <div className="w-1.5 h-1.5 rounded-full bg-whispr-text-muted" />
+            <span className="text-xs text-whispr-text-secondary">System messages for joins/leaves</span>
           </div>
         </div>
       </div>
@@ -553,9 +553,9 @@ const RoomContent = ({
 }) => {
   return (
     <ChatRoomProvider name={roomId}>
-      <div className="flex flex-col w-full max-w-7xl h-[calc(100vh-3rem)] overflow-hidden mx-auto bg-[#111111] border border-[#2A2A2A] rounded-2xl shadow-2xl">
-        <div className="flex flex-row w-full border-b border-[#2A2A2A]">
-          <div className="flex-1 border-r border-[#2A2A2A]">
+      <div className="flex flex-col w-full max-w-7xl h-[calc(100vh-3rem)] overflow-hidden mx-auto bg-whispr-bg-primary border border-whispr-border rounded-2xl shadow-2xl">
+        <div className="flex flex-row w-full border-b border-whispr-border">
+          <div className="flex-1 border-r border-whispr-border">
             <ConnectionStatus />
           </div>
           <div className="flex-1">
@@ -564,7 +564,7 @@ const RoomContent = ({
         </div>
 
         <div className="flex flex-1 flex-row overflow-hidden">
-          <div className="flex flex-col w-72 border-r border-[#2A2A2A]">
+          <div className="flex flex-col w-72 border-r border-whispr-border">
             <div className="flex-1 overflow-y-auto">
               <PresenceStatus currentUsername={username} />
             </div>
@@ -626,14 +626,14 @@ const RoomPage = () => {
   }, [username, roomId]);
 
   return (
-    <div className="min-h-screen bg-[#111111] flex items-center justify-center p-6">
+    <div className="min-h-screen bg-whispr-bg-primary flex items-center justify-center p-6">
       <div className="w-full h-full flex items-center justify-center">
         {!username ? (
           <UsernameModal onSubmit={setUsername} />
         ) : !realtimeClient || !chatClient ? (
           <div className="text-center">
-            <div className="w-12 h-12 border-3 border-[#2A2A2A] border-t-[#FFFFFF] rounded-full animate-spin mx-auto mb-6"></div>
-            <p className="text-sm text-[#888888] uppercase tracking-[0.15em] font-semibold">
+            <div className="w-12 h-12 border-3 border-whispr-border border-t-whispr-accent rounded-full animate-spin mx-auto mb-6"></div>
+            <p className="text-sm text-whispr-text-secondary uppercase tracking-[0.15em] font-semibold">
               Connecting to room...
             </p>
           </div>
