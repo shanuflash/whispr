@@ -520,6 +520,26 @@ const PresenceStatus = ({ currentUsername }: { currentUsername: string }) => {
           );
         })}
       </div>
+
+      <div className="mt-6 pt-4 border-t border-[#2A2A2A]">
+        <h3 className="text-xs font-semibold uppercase tracking-wider text-[#555555] mb-3">
+          Coming Soon
+        </h3>
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-2 px-2 py-1.5">
+            <div className="w-1.5 h-1.5 rounded-full bg-[#555555]" />
+            <span className="text-xs text-[#888888]">Password protected rooms</span>
+          </div>
+          <div className="flex items-center gap-2 px-2 py-1.5">
+            <div className="w-1.5 h-1.5 rounded-full bg-[#555555]" />
+            <span className="text-xs text-[#888888]">Room roles (owner, admin)</span>
+          </div>
+          <div className="flex items-center gap-2 px-2 py-1.5">
+            <div className="w-1.5 h-1.5 rounded-full bg-[#555555]" />
+            <span className="text-xs text-[#888888]">System messages for joins/leaves</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
