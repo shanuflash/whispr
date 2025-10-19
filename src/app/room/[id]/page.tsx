@@ -131,7 +131,9 @@ const UsernameModal = ({
               autoFocus
             />
             {error && (
-              <p className="text-whispr-error text-sm mt-3 font-medium">{error}</p>
+              <p className="text-whispr-error text-sm mt-3 font-medium">
+                {error}
+              </p>
             )}
             <p className="text-whispr-text-muted text-xs mt-3 tracking-wide">
               No spaces • 2-20 characters
@@ -166,7 +168,13 @@ const ConnectionStatus = () => {
   );
 };
 
-const RoomStatus = ({ roomId }: { roomId: string }) => {
+const RoomStatus = ({
+  roomId,
+  onTogglePresence,
+}: {
+  roomId: string;
+  onTogglePresence: () => void;
+}) => {
   const router = useRouter();
   const [currentRoomStatus, setCurrentRoomStatus] = useState("");
   const { roomName } = useRoom({
@@ -176,18 +184,37 @@ const RoomStatus = ({ roomId }: { roomId: string }) => {
   });
 
   return (
-    <div className="px-6 py-5 h-full bg-whispr-bg-secondary flex items-center justify-between gap-4">
-      <div className="flex items-center gap-3 flex-1 min-w-0">
-        <span className="text-xs text-whispr-text-muted uppercase tracking-[0.1em] font-semibold">
+    <div className="px-4 md:px-6 py-5 h-full bg-whispr-bg-secondary flex items-center justify-between gap-2 md:gap-4">
+      <button
+        onClick={onTogglePresence}
+        className="md:hidden p-2 bg-whispr-border hover:bg-whispr-bg-tertiary text-whispr-text-primary transition-all duration-200 rounded-lg"
+        aria-label="Toggle presence panel"
+      >
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+          />
+        </svg>
+      </button>
+      <div className="flex items-center gap-2 md:gap-3 flex-1 min-w-0">
+        <span className="text-xs text-whispr-text-muted uppercase tracking-[0.1em] font-semibold hidden md:inline">
           Room
         </span>
-        <span className="text-sm text-whispr-text-primary font-mono truncate bg-whispr-bg-primary px-3 py-1.5 rounded-md">
+        <span className="text-xs md:text-sm text-whispr-text-primary font-mono truncate bg-whispr-bg-primary px-2 md:px-3 py-1.5 rounded-md">
           {roomId}
         </span>
       </div>
       <button
         onClick={() => router.push("/")}
-        className="px-4 py-2 bg-whispr-border hover:bg-whispr-accent hover:text-whispr-bg-primary hover:scale-105 text-xs text-whispr-text-primary transition-all duration-200 uppercase tracking-[0.1em] font-semibold rounded-lg shadow-sm hover:shadow-md"
+        className="px-3 md:px-4 py-2 bg-whispr-border hover:bg-whispr-accent hover:text-whispr-bg-primary hover:scale-105 text-xs text-whispr-text-primary transition-all duration-200 uppercase tracking-[0.1em] font-semibold rounded-lg shadow-sm hover:shadow-md"
       >
         Exit
       </button>
@@ -321,7 +348,7 @@ const ChatBox = ({
 
   return (
     <div className="flex flex-col w-full h-full bg-whispr-bg-primary">
-      <div className="flex-1 px-6 pt-6 pb-3 overflow-y-auto">
+      <div className="flex-1 px-3 md:px-6 pt-4 md:pt-6 pb-3 overflow-y-auto">
         {messages.length === 0 ? (
           <EmptyState roomId={roomId} />
         ) : (
@@ -359,7 +386,7 @@ const ChatBox = ({
                 onMouseLeave={() => setHoveredMessage(null)}
               >
                 <div
-                  className={`flex gap-3 max-w-[75%] ${isMine ? "flex-row-reverse" : "flex-row"}`}
+                  className={`flex gap-2 md:gap-3 max-w-[85%] md:max-w-[75%] ${isMine ? "flex-row-reverse" : "flex-row"}`}
                 >
                   {!isMine && (
                     <div
@@ -387,9 +414,9 @@ const ChatBox = ({
 
                     <div
                       onClick={() => onUpdateMessage(msg)}
-                      className={`px-4 py-2.5 ${
+                      className={`px-3 md:px-4 py-2 md:py-2.5 ${
                         isMine
-                          ? "bg-[var(--whispr-accent)] text-[var(--whispr-bg-primary)] cursor-pointer hover:bg-[var(--whispr-text-primary)] hover:shadow-lg hover:scale-[1.02]"
+                          ? "bg-[var(--whispr-accent)] text-[var(--whispr-bg-primary)] cursor-pointer hover:bg-[var(--whispr-text-primary)] hover:shadow-lg md:hover:scale-[1.02]"
                           : "bg-[var(--whispr-bg-secondary)] text-[var(--whispr-text-primary)] hover:bg-[var(--whispr-bg-tertiary)]"
                       } transition-all duration-200 ${borderRadius} shadow-sm group-hover:shadow-md`}
                     >
@@ -405,8 +432,8 @@ const ChatBox = ({
         )}
         <div ref={messagesEndRef} />
       </div>
-      
-      <div className="px-6 pb-3 h-8 flex items-center">
+
+      <div className="px-3 md:px-6 pb-3 h-8 flex items-center">
         {(() => {
           const othersTyping = Array.from(currentlyTyping).filter(
             (id) => id !== username,
@@ -428,7 +455,7 @@ const ChatBox = ({
                     style={{ animationDelay: "300ms" }}
                   />
                 </div>
-                <p className="text-xs text-whispr-text-secondary font-medium">
+                <p className="text-xs text-whispr-text-secondary font-medium truncate">
                   {othersTyping.join(", ")}{" "}
                   {othersTyping.length === 1 ? "is" : "are"} typing...
                 </p>
@@ -439,12 +466,12 @@ const ChatBox = ({
       </div>
 
       <div className="border-t border-whispr-border bg-whispr-bg-secondary">
-        <div className="px-6 py-4">
-          <div className="flex items-center gap-3 mb-2">
+        <div className="px-3 md:px-6 py-3 md:py-4">
+          <div className="flex items-center gap-2 md:gap-3 mb-2">
             <input
               type="text"
               placeholder="Type a message..."
-              className="flex-1 bg-whispr-bg-primary border-2 border-whispr-border rounded-lg px-4 py-3 text-whispr-text-primary placeholder:text-whispr-text-muted outline-none focus:border-whispr-text-muted focus:ring-2 focus:ring-whispr-text-muted/20 transition-all duration-200 text-sm"
+              className="flex-1 bg-whispr-bg-primary border-2 border-whispr-border rounded-lg px-3 md:px-4 py-2.5 md:py-3 text-whispr-text-primary placeholder:text-whispr-text-muted outline-none focus:border-whispr-text-muted focus:ring-2 focus:ring-whispr-text-muted/20 transition-all duration-200 text-sm"
               value={inputValue}
               onChange={handleChange}
               onKeyDown={(event) => {
@@ -456,12 +483,12 @@ const ChatBox = ({
             <button
               onClick={handleSend}
               disabled={!inputValue.trim()}
-              className="bg-whispr-accent text-whispr-bg-primary p-3 rounded-full hover:bg-whispr-text-primary hover:scale-110 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg active:scale-90"
+              className="bg-whispr-accent text-whispr-bg-primary p-2.5 md:p-3 rounded-full hover:bg-whispr-text-primary md:hover:scale-110 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg active:scale-90"
             >
-              <Send className="w-5 h-5" />
+              <Send className="w-4 h-4 md:w-5 md:h-5" />
             </button>
           </div>
-          <p className="text-[10px] text-whispr-text-muted italic text-center">
+          <p className="text-[10px] text-whispr-text-muted italic text-center hidden md:block">
             like a real whisper, these messages fade away in 24 hours
           </p>
         </div>
@@ -528,15 +555,21 @@ const PresenceStatus = ({ currentUsername }: { currentUsername: string }) => {
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2 px-2 py-1.5">
             <div className="w-1.5 h-1.5 rounded-full bg-whispr-text-muted" />
-            <span className="text-xs text-whispr-text-secondary">Password protected rooms</span>
+            <span className="text-xs text-whispr-text-secondary">
+              Password protected rooms
+            </span>
           </div>
           <div className="flex items-center gap-2 px-2 py-1.5">
             <div className="w-1.5 h-1.5 rounded-full bg-whispr-text-muted" />
-            <span className="text-xs text-whispr-text-secondary">Room roles (owner, admin)</span>
+            <span className="text-xs text-whispr-text-secondary">
+              Room roles (owner, admin)
+            </span>
           </div>
           <div className="flex items-center gap-2 px-2 py-1.5">
             <div className="w-1.5 h-1.5 rounded-full bg-whispr-text-muted" />
-            <span className="text-xs text-whispr-text-secondary">System messages for joins/leaves</span>
+            <span className="text-xs text-whispr-text-secondary">
+              System messages for joins/leaves
+            </span>
           </div>
         </div>
       </div>
@@ -551,24 +584,62 @@ const RoomContent = ({
   roomId: string;
   username: string;
 }) => {
+  const [showPresence, setShowPresence] = useState(false);
+
   return (
     <ChatRoomProvider name={roomId}>
-      <div className="flex flex-col w-full max-w-7xl h-[calc(100vh-3rem)] overflow-hidden mx-auto bg-whispr-bg-primary border border-whispr-border rounded-2xl shadow-2xl">
-        <div className="flex flex-row w-full border-b border-whispr-border">
-          <div className="flex-1 border-r border-whispr-border">
+      <div className="flex flex-col w-full max-w-7xl h-screen md:h-[calc(100vh-3rem)] overflow-hidden mx-auto bg-whispr-bg-primary md:border border-whispr-border md:rounded-2xl shadow-2xl">
+        <div className="flex flex-col md:flex-row w-full border-b border-whispr-border">
+          <div className="flex-1 md:border-r border-whispr-border">
             <ConnectionStatus />
           </div>
-          <div className="flex-1">
-            <RoomStatus roomId={roomId} />
+          <div className="flex-1 border-t md:border-t-0 border-whispr-border">
+            <RoomStatus
+              roomId={roomId}
+              onTogglePresence={() => setShowPresence(!showPresence)}
+            />
           </div>
         </div>
 
-        <div className="flex flex-1 flex-row overflow-hidden">
-          <div className="flex flex-col w-72 border-r border-whispr-border">
+        <div className="flex flex-1 flex-row overflow-hidden relative">
+          <div
+            className={`
+            flex flex-col w-72 border-r border-whispr-border bg-whispr-bg-primary
+            md:relative md:translate-x-0
+            absolute inset-y-0 left-0 z-20 transition-transform duration-300
+            ${showPresence ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
+          `}
+          >
             <div className="flex-1 overflow-y-auto">
               <PresenceStatus currentUsername={username} />
             </div>
+            <button
+              onClick={() => setShowPresence(false)}
+              className="md:hidden absolute top-4 right-4 p-2 bg-whispr-bg-secondary rounded-lg hover:bg-whispr-bg-tertiary transition-colors"
+              aria-label="Close presence panel"
+            >
+              <svg
+                className="w-5 h-5 text-whispr-text-primary"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
           </div>
+
+          {showPresence && (
+            <div
+              className="md:hidden absolute inset-0 bg-black/50 z-10"
+              onClick={() => setShowPresence(false)}
+            />
+          )}
 
           <div className="flex flex-col flex-1">
             <ChatBox username={username} roomId={roomId} />
@@ -626,7 +697,7 @@ const RoomPage = () => {
   }, [username, roomId]);
 
   return (
-    <div className="min-h-screen bg-whispr-bg-primary flex items-center justify-center p-6">
+    <div className="min-h-screen bg-whispr-bg-primary flex items-center justify-center p-0 md:p-6">
       <div className="w-full h-full flex items-center justify-center">
         {!username ? (
           <UsernameModal onSubmit={setUsername} />
