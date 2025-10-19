@@ -271,7 +271,7 @@ const ChatBox = ({
         if (!historyBeforeSubscribe) {
           return;
         }
-        const history = await historyBeforeSubscribe({ limit: 50 });
+        const history = await historyBeforeSubscribe({ limit: 100 });
         setMessages(history.items.reverse());
       } catch (error) {
         console.error("Error loading message history:", error);
