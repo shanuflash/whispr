@@ -31,8 +31,8 @@ export function ChatBox({ username, roomId }: ChatBoxProps) {
         }
         case ChatMessageEventType.Updated: {
           setMessages((prevMessages) => {
-            const index = prevMessages.findIndex((other) =>
-              message.isSameAs(other),
+            const index = prevMessages.findIndex(
+              (other) => other.serial === message.serial,
             );
             if (index === -1) {
               return prevMessages;
