@@ -43,7 +43,7 @@ export function ChatBox({ username, roomId }: ChatBoxProps) {
         systemType: event.type === "enter" ? "join" : "leave",
         username: isCurrentUser ? "You" : event.member.clientId,
         timestamp,
-        id: `system-${event.member.clientId}-${timestamp}`,
+        id: `system-${event.member.clientId}`,
       };
 
       setAllItems((prev) => [...prev, systemMessage]);
