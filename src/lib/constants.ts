@@ -20,4 +20,3 @@ export const AVATAR_GRADIENTS = [
   "bg-gradient-to-br from-[#F0F0F0] to-[#999999]",
   "bg-gradient-to-br from-[#E5E5E5] to-[#666666]",
 ] as const;
-

@@ -87,4 +87,3 @@ export function RoomContent({ roomId, username }: RoomContentProps) {
     </ChatRoomProvider>
   );
 }
-

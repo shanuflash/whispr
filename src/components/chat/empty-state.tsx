@@ -16,10 +16,10 @@ export function EmptyState({ roomId }: EmptyStateProps) {
           to join.
         </p>
         <p className="text-xs text-whispr-text-muted italic">
-          Messages are automatically deleted after {MESSAGE_RETENTION_HOURS} hours
+          Messages are automatically deleted after {MESSAGE_RETENTION_HOURS}{" "}
+          hours
         </p>
       </div>
     </div>
   );
 }
-

@@ -12,7 +12,7 @@ interface RoomStatusProps {
 export function RoomStatus({ roomId, onTogglePresence }: RoomStatusProps) {
   const router = useRouter();
   const [currentRoomStatus, setCurrentRoomStatus] = useState("");
-  
+
   useRoom({
     onStatusChange: (status) => {
       setCurrentRoomStatus(status.current);
@@ -58,4 +58,3 @@ export function RoomStatus({ roomId, onTogglePresence }: RoomStatusProps) {
     </div>
   );
 }
-

@@ -14,9 +14,9 @@ export function UsernameModal({ onSubmit }: UsernameModalProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const result = validateUsername(username);
-    
+
     if (!result.success) {
       setError(result.error || "Invalid username");
       return;
@@ -70,11 +70,18 @@ export function UsernameModal({ onSubmit }: UsernameModalProps) {
               aria-describedby={error ? "username-error" : "username-hint"}
             />
             {error && (
-              <p id="username-error" className="text-whispr-error text-sm mt-3 font-medium" role="alert">
+              <p
+                id="username-error"
+                className="text-whispr-error text-sm mt-3 font-medium"
+                role="alert"
+              >
                 {error}
               </p>
             )}
-            <p id="username-hint" className="text-whispr-text-muted text-xs mt-3 tracking-wide">
+            <p
+              id="username-hint"
+              className="text-whispr-text-muted text-xs mt-3 tracking-wide"
+            >
               No spaces • {USERNAME_MIN_LENGTH}-{USERNAME_MAX_LENGTH} characters
             </p>
           </div>
@@ -90,4 +97,3 @@ export function UsernameModal({ onSubmit }: UsernameModalProps) {
     </div>
   );
 }
-

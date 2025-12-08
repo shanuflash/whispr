@@ -4,7 +4,7 @@ import { useChatConnection } from "@ably/chat/react";
 
 export function ConnectionStatus() {
   const { currentStatus } = useChatConnection();
-  
+
   return (
     <div className="px-6 py-5 h-full bg-whispr-bg-secondary border-r border-whispr-border flex items-center">
       <div className="flex items-center gap-2.5">
@@ -24,4 +24,3 @@ export function ConnectionStatus() {
     </div>
   );
 }
-

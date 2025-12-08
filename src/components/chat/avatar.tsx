@@ -33,4 +33,3 @@ export function Avatar({ username, size = "md" }: AvatarProps) {
     </div>
   );
 }
-

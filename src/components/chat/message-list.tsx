@@ -3,11 +3,14 @@
 import { useState } from "react";
 import type { Message } from "@ably/chat";
 import { Avatar } from "./avatar";
+import type { MessageItem } from "@/lib/types";
+import { Trash2 } from "lucide-react";
 
 interface MessageListProps {
-  messages: Message[];
+  items: MessageItem[];
   currentUsername: string;
   onUpdateMessage: (message: Message) => void;
+  onDeleteMessage: (message: Message) => void;
 }
 
 function formatTime(timestamp: number): string {
@@ -20,10 +23,39 @@ function formatTime(timestamp: number): string {
   return `${displayHours}:${displayMinutes} ${ampm}`;
 }
 
+function SystemMessage({
+  username,
+  type,
+}: {
+  username: string;
+  type: "join" | "leave";
+}) {
+  const isYou = username === "You";
+  return (
+    <div className="flex justify-center my-4">
+      <div className="bg-whispr-bg-secondary px-4 py-2 rounded-full border border-whispr-border">
+        <p className="text-xs text-whispr-text-secondary">
+          <span className="font-semibold text-whispr-text-primary">
+            {username}
+          </span>
+          {type === "join"
+            ? isYou
+              ? " joined the room"
+              : " joined the room"
+            : isYou
+              ? " left the room"
+              : " left the room"}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export function MessageList({
-  messages,
+  items,
   currentUsername,
   onUpdateMessage,
+  onDeleteMessage,
 }: MessageListProps) {
   const [hoveredMessage, setHoveredMessage] = useState<string | null>(null);
 
@@ -33,10 +65,27 @@ export function MessageList({
 
   return (
     <>
-      {messages.map((msg: Message, idx: number) => {
+      {items.map((item, idx) => {
+        // system messages
+        if (item.type === "system") {
+          return (
+            <SystemMessage
+              key={item.id}
+              username={item.username}
+              type={item.systemType}
+            />
+          );
+        }
+
+        // regular messages
+        const msg = item.data;
         const isMine = msg.clientId === currentUsername;
-        const prevMsg = idx > 0 ? messages[idx - 1] : null;
-        const nextMsg = idx < messages.length - 1 ? messages[idx + 1] : null;
+
+        const prevItem = idx > 0 ? items[idx - 1] : null;
+        const nextItem = idx < items.length - 1 ? items[idx + 1] : null;
+
+        const prevMsg = prevItem?.type === "message" ? prevItem.data : null;
+        const nextMsg = nextItem?.type === "message" ? nextItem.data : null;
 
         const isFirstInGroup = !prevMsg || prevMsg.clientId !== msg.clientId;
         const isLastInGroup = !nextMsg || nextMsg.clientId !== msg.clientId;
@@ -57,9 +106,11 @@ export function MessageList({
             : "rounded-2xl rounded-tl-md";
         }
 
+        const isHovered = hoveredMessage === msg.serial;
+
         return (
           <article
-            key={idx}
+            key={msg.serial || idx}
             className={`flex ${isMine ? "justify-end" : "justify-start"} ${isFirstInGroup ? "mt-6" : "mt-0.5"} animate-in fade-in slide-in-from-bottom-2 duration-200`}
             onMouseEnter={() => setHoveredMessage(msg.serial)}
             onMouseLeave={() => setHoveredMessage(null)}
@@ -75,7 +126,7 @@ export function MessageList({
                 </div>
               )}
 
-              <div className="flex flex-col flex-1 min-w-0">
+              <div className="flex flex-col flex-1 min-w-0 relative">
                 {isFirstInGroup && (
                   <div
                     className={`flex items-baseline gap-2 mb-1.5 ${isMine ? "justify-end" : "justify-start"}`}
@@ -94,25 +145,40 @@ export function MessageList({
                   </div>
                 )}
 
-                <div
-                  onClick={() => onUpdateMessage(msg)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      onUpdateMessage(msg);
-                    }
-                  }}
-                  role={isMine ? "button" : undefined}
-                  tabIndex={isMine ? 0 : undefined}
-                  aria-label={isMine ? "Edit message" : undefined}
-                  className={`px-3 md:px-4 py-2 md:py-2.5 ${
-                    isMine
-                      ? "bg-[var(--whispr-accent)] text-[var(--whispr-bg-primary)] cursor-pointer hover:bg-[var(--whispr-text-primary)] hover:shadow-lg md:hover:scale-[1.02]"
-                      : "bg-[var(--whispr-bg-secondary)] text-[var(--whispr-text-primary)] hover:bg-[var(--whispr-bg-tertiary)]"
-                  } transition-all duration-200 ${borderRadius} shadow-sm group-hover:shadow-md`}
-                >
-                  <p className="text-sm leading-relaxed break-words">
-                    {msg.text}
-                  </p>
+                <div className="relative group">
+                  <div
+                    onClick={() => isMine && onUpdateMessage(msg)}
+                    onKeyDown={(e) => {
+                      if (isMine && (e.key === "Enter" || e.key === " ")) {
+                        onUpdateMessage(msg);
+                      }
+                    }}
+                    role={isMine ? "button" : undefined}
+                    tabIndex={isMine ? 0 : undefined}
+                    aria-label={isMine ? "Edit message" : undefined}
+                    className={`px-3 md:px-4 py-2 md:py-2.5 ${
+                      isMine
+                        ? "bg-[var(--whispr-accent)] text-[var(--whispr-bg-primary)] cursor-pointer hover:bg-[var(--whispr-text-primary)] hover:shadow-lg md:hover:scale-[1.02]"
+                        : "bg-[var(--whispr-bg-secondary)] text-[var(--whispr-text-primary)] hover:bg-[var(--whispr-bg-tertiary)]"
+                    } transition-all duration-200 ${borderRadius} shadow-sm`}
+                  >
+                    <p className="text-sm leading-relaxed break-words">
+                      {msg.text}
+                    </p>
+                  </div>
+
+                  {isMine && isHovered && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onDeleteMessage(msg);
+                      }}
+                      className="absolute -left-8 top-1/2 -translate-y-1/2 p-1.5 bg-whispr-bg-secondary hover:bg-whispr-error/20 text-whispr-text-muted hover:text-whispr-error rounded-lg transition-all duration-200 shadow-lg"
+                      aria-label="Delete message"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
@@ -122,4 +188,3 @@ export function MessageList({
     </>
   );
 }
-

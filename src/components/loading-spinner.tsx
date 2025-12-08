@@ -25,4 +25,3 @@ export function LoadingSpinner({ size = "md", message }: LoadingSpinnerProps) {
     </div>
   );
 }
-

@@ -1,16 +1,22 @@
 import { z } from "zod";
-import {
-  USERNAME_MIN_LENGTH,
-  USERNAME_MAX_LENGTH,
-} from "./constants";
+import { USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH } from "./constants";
 import type { ValidationResult } from "./types";
 
 // Username validation schema
 const usernameSchema = z
   .string()
-  .min(USERNAME_MIN_LENGTH, `Username must be at least ${USERNAME_MIN_LENGTH} characters`)
-  .max(USERNAME_MAX_LENGTH, `Username must be less than ${USERNAME_MAX_LENGTH} characters`)
-  .regex(/^[a-zA-Z0-9_-]+$/, "Username can only contain letters, numbers, hyphens, and underscores")
+  .min(
+    USERNAME_MIN_LENGTH,
+    `Username must be at least ${USERNAME_MIN_LENGTH} characters`,
+  )
+  .max(
+    USERNAME_MAX_LENGTH,
+    `Username must be less than ${USERNAME_MAX_LENGTH} characters`,
+  )
+  .regex(
+    /^[a-zA-Z0-9_-]+$/,
+    "Username can only contain letters, numbers, hyphens, and underscores",
+  )
   .refine((val) => !val.includes(" "), "Username cannot contain spaces");
 
 // Message validation schema
@@ -49,7 +55,7 @@ export function validateMessage(message: string): ValidationResult<string> {
 // Rate limiting helper
 export function createRateLimiter(cooldownMs: number) {
   let lastCall = 0;
-  
+
   return {
     canProceed: (): boolean => {
       const now = Date.now();
@@ -64,4 +70,3 @@ export function createRateLimiter(cooldownMs: number) {
     },
   };
 }
-

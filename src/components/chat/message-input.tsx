@@ -1,11 +1,14 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { Send } from "lucide-react";
 import { useTyping } from "@ably/chat/react";
 import { validateMessage } from "@/lib/validation";
 import { createRateLimiter } from "@/lib/validation";
-import { MESSAGE_SEND_COOLDOWN_MS, MESSAGE_RETENTION_HOURS } from "@/lib/constants";
+import {
+  MESSAGE_SEND_COOLDOWN_MS,
+  MESSAGE_RETENTION_HOURS,
+} from "@/lib/constants";
 
 interface MessageInputProps {
   username: string;
@@ -19,6 +22,7 @@ export function MessageInput({ username, onSendMessage }: MessageInputProps) {
   const [error, setError] = useState("");
   const [isSending, setIsSending] = useState(false);
   const { currentlyTyping, keystroke, stop } = useTyping();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSend = useCallback(async () => {
     if (!inputValue.trim() || isSending) return;
@@ -31,7 +35,7 @@ export function MessageInput({ username, onSendMessage }: MessageInputProps) {
     }
 
     const result = validateMessage(inputValue);
-    
+
     if (!result.success) {
       setError(result.error || "Invalid message");
       return;
@@ -50,8 +54,11 @@ export function MessageInput({ username, onSendMessage }: MessageInputProps) {
       setError("Failed to send message. Please try again.");
     } finally {
       setIsSending(false);
+      requestAnimationFrame(() => {
+        inputRef.current?.focus();
+      });
     }
-  }, [inputValue, isSending, onSendMessage, stop, username]);
+  }, [inputValue, isSending, onSendMessage, stop]);
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,9 +66,10 @@ export function MessageInput({ username, onSendMessage }: MessageInputProps) {
       setInputValue(newValue);
       setError("");
 
-      
       if (newValue.trim().length > 0) {
-        keystroke().catch((err) => console.error("Error starting typing:", err));
+        keystroke().catch((err) =>
+          console.error("Error starting typing:", err),
+        );
       } else {
         stop().catch((err) => console.error("Error stopping typing:", err));
       }
@@ -77,7 +85,11 @@ export function MessageInput({ username, onSendMessage }: MessageInputProps) {
     <>
       <div className="px-3 md:px-6 pb-3 h-8 flex items-center">
         {othersTyping.length > 0 && (
-          <div className="flex items-center gap-2" role="status" aria-live="polite">
+          <div
+            className="flex items-center gap-2"
+            role="status"
+            aria-live="polite"
+          >
             <div className="flex gap-1" aria-hidden="true">
               <span
                 className="w-1.5 h-1.5 bg-whispr-accent rounded-full animate-bounce"
@@ -107,6 +119,7 @@ export function MessageInput({ username, onSendMessage }: MessageInputProps) {
               Type a message
             </label>
             <input
+              ref={inputRef}
               id="message-input"
               type="text"
               placeholder="Type a message..."
@@ -137,16 +150,20 @@ export function MessageInput({ username, onSendMessage }: MessageInputProps) {
             </button>
           </div>
           {error && (
-            <p id="message-error" className="text-whispr-error text-xs mb-2" role="alert">
+            <p
+              id="message-error"
+              className="text-whispr-error text-xs mb-2"
+              role="alert"
+            >
               {error}
             </p>
           )}
           <p className="text-[10px] text-whispr-text-muted italic text-center hidden md:block">
-            like a real whisper, these messages fade away in {MESSAGE_RETENTION_HOURS} hours
+            like a real whisper, these messages fade away in{" "}
+            {MESSAGE_RETENTION_HOURS} hours
           </p>
         </div>
       </div>
     </>
   );
 }
-

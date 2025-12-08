@@ -82,15 +82,8 @@ export function PresenceStatus({ currentUsername }: PresenceStatusProps) {
               Room roles (owner, admin)
             </span>
           </div>
-          <div className="flex items-center gap-2 px-2 py-1.5">
-            <div className="w-1.5 h-1.5 rounded-full bg-whispr-text-muted" />
-            <span className="text-xs text-whispr-text-secondary">
-              System messages for joins/leaves
-            </span>
-          </div>
         </div>
       </div>
     </aside>
   );
 }
-

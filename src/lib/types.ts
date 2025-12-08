@@ -17,3 +17,19 @@ export interface UserPresence {
   timestamp: number;
 }
 
+export type SystemMessageType = "join" | "leave";
+
+export interface SystemMessage {
+  type: "system";
+  systemType: SystemMessageType;
+  username: string;
+  timestamp: number;
+  id: string;
+}
+
+export interface ChatMessage {
+  type: "message";
+  data: any;
+}
+
+export type MessageItem = SystemMessage | ChatMessage;
