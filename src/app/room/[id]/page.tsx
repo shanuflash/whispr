@@ -27,7 +27,7 @@ export default function RoomPage() {
       authCallback: async (tokenParams, callback) => {
         try {
           const response = await fetch(
-            `/whispr/api?clientId=${encodeURIComponent(username)}`,
+            `/api?clientId=${encodeURIComponent(username)}`,
           );
           if (!response.ok) {
             throw new Error("Failed to get token");
